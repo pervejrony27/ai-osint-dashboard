@@ -1,3 +1,65 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  background-color: #060912;
+  color: #e2e8f0;
+  overflow-x: hidden;
+}
+
+code, .mono {
+  font-family: "JetBrains Mono", monospace;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0e1a;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
+
+/* Glowing border effect */
+.glow-border {
+  border: 1px solid rgba(6, 182, 212, 0.3);
+  box-shadow: 0 0 15px rgba(6, 182, 212, 0.1),
+    inset 0 0 15px rgba(6, 182, 212, 0.05);
+}
+
+.glow-border:hover {
+  border-color: rgba(6, 182, 212, 0.6);
+  box-shadow: 0 0 30px rgba(6, 182, 212, 0.15),
+    inset 0 0 30px rgba(6, 182, 212, 0.08);
+}
+
+/* Grid background pattern */
+.grid-bg {
+  background-image: linear-gradient(
+      rgba(6, 182, 212, 0.03) 1px,
+      transparent 1px
+    ),
+    linear-gradient(90deg, rgba(6, 182, 212, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Severity badge styles */
+.badge-critical { @apply bg-red-500/20 text-red-400 border border-red-500/30; }
+.badge-high { @apply bg-orange-500/20 text-orange-400 border border-orange-500/30; }
+.badge-medium { @apply bg-amber-500/20 text-amber-400 border border-amber-500/30; }
+.badge-low { @apply bg-green-500/20 text-green-400 border border-green-500/30; }
+.badge-info { @apply bg-blue-500/20 text-blue-400 border border-blue-500/30; }
