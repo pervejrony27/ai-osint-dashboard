@@ -230,7 +230,7 @@ function App() {
       <span>© {new Date().getFullYear()} AI-OSINT Dashboard</span>
     </p>
   </div>
-</footer>>
+</footer>
     </div>
   );
 }
