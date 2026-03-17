@@ -30,6 +30,18 @@ function App() {
   const [moduleStatus, setModuleStatus] = useState({});
   const [scanComplete, setScanComplete] = useState(false);
 
+  // Reset everything for a new scan
+  const resetScan = useCallback(() => {
+    setScanning(false);
+    setDomain("");
+    setResults({});
+    setModuleStatus({});
+    setScanComplete(false);
+    toast.success("Ready for a new scan!");
+    // Scroll to top
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
   const startScan = useCallback(async (targetDomain) => {
     // Clean domain input
     let cleaned = targetDomain
@@ -121,6 +133,35 @@ function App() {
 
         {(scanning || scanComplete) && (
           <>
+            {/* New Scan Button — Shows after scan completes */}
+            {scanComplete && (
+              <div className="flex justify-center mb-8">
+                <button
+                  onClick={resetScan}
+                  className="group relative flex items-center gap-3 px-8 py-4 rounded-xl font-semibold text-sm uppercase tracking-wider transition-all duration-300 bg-gradient-to-r from-cyber-accent to-cyber-purple text-cyber-dark hover:shadow-lg hover:shadow-cyber-accent/25 hover:scale-105 active:scale-95"
+                >
+                  {/* Glow effect behind button */}
+                  <span className="absolute inset-0 rounded-xl bg-gradient-to-r from-cyber-accent to-cyber-purple blur-lg opacity-0 group-hover:opacity-30 transition-opacity duration-300" />
+
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5 group-hover:rotate-180 transition-transform duration-500"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                    />
+                  </svg>
+                  <span className="relative">Scan Another Domain</span>
+                </button>
+              </div>
+            )}
+
             <ScanProgress
               modules={[...MODULES, { key: "summary", label: "AI Summary" }]}
               status={moduleStatus}
@@ -136,13 +177,60 @@ function App() {
       </main>
 
       <footer className="text-center py-8 text-gray-600 text-sm border-t border-cyber-border">
-        <p>
-          OSINT Dashboard — For authorized security assessments only.
-        </p>
-        <p className="mt-1">
-          Ensure you have permission before scanning any domain.
-        </p>
-      </footer>
+  <div className="max-w-2xl mx-auto">
+    <p className="text-amber-400 font-semibold mb-2">
+      ⚠️ Legal Disclaimer
+    </p>
+
+    <p>
+      This tool is designed for authorized security assessments only.
+      Only scan domains you own or have explicit written permission to test.
+      Unauthorized scanning may violate computer crime laws in your jurisdiction.
+    </p>
+
+    <p className="mt-2">
+      The developer is not responsible for any misuse of this tool.
+      By using this tool, you agree that you have proper authorization.
+    </p>
+
+    <p className="mt-4 text-gray-500 flex flex-wrap justify-center items-center gap-3">
+      <span>Built by</span>
+
+      <a
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-cyber-accent hover:text-cyber-glow transition-colors"
+      >
+        MD Pervej Ahmed Rony
+      </a>
+
+      <span>|</span>
+
+      <a
+        href="https://www.linkedin.com/in/pervejahmed/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-cyber-purple hover:text-purple-400 transition-colors"
+      >
+        LinkedIn
+      </a>
+      <span>|</span>
+
+      <a
+        href="https://github.com/pervejrony27"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-cyber-purple hover:text-purple-400 transition-colors"
+      >
+        GitHub
+      </a>
+
+      <span>|</span>
+
+      <span>© {new Date().getFullYear()} AI-OSINT Dashboard</span>
+    </p>
+  </div>
+</footer>>
     </div>
   );
 }

@@ -1,13 +1,14 @@
 import React, { useState } from "react";
-import { HiMagnifyingGlass, HiGlobeAlt } from "react-icons/hi2";
+import { HiMagnifyingGlass, HiGlobeAlt, HiShieldCheck } from "react-icons/hi2";
 import { motion } from "framer-motion";
 
 const ScanForm = ({ onScan, scanning }) => {
   const [domain, setDomain] = useState("");
+  const [agreed, setAgreed] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (domain.trim()) {
+    if (domain.trim() && agreed) {
       onScan(domain);
     }
   };
@@ -52,9 +53,9 @@ const ScanForm = ({ onScan, scanning }) => {
 
             <button
               type="submit"
-              disabled={scanning || !domain.trim()}
+              disabled={scanning || !domain.trim() || !agreed}
               className={`flex items-center gap-2 px-6 py-4 font-semibold text-sm uppercase tracking-wider transition-all duration-300 ${
-                scanning
+                scanning || !agreed
                   ? "bg-cyber-accent/20 text-cyber-accent cursor-not-allowed"
                   : "bg-cyber-accent text-cyber-dark hover:bg-cyber-glow"
               }`}
@@ -86,6 +87,27 @@ const ScanForm = ({ onScan, scanning }) => {
               )}
             </button>
           </div>
+        </div>
+
+        {/* Authorization Checkbox */}
+        <div className="mt-4 flex items-start gap-3 max-w-xl mx-auto">
+          <input
+            type="checkbox"
+            id="consent"
+            checked={agreed}
+            onChange={(e) => setAgreed(e.target.checked)}
+            className="mt-1 w-4 h-4 rounded border-cyber-border bg-cyber-dark accent-cyber-accent cursor-pointer"
+          />
+          <label
+            htmlFor="consent"
+            className="text-xs text-gray-500 cursor-pointer leading-relaxed"
+          >
+            <HiShieldCheck className="inline text-cyber-accent mr-1" />
+            I confirm that I <span className="text-gray-300">own this domain</span> or
+            have <span className="text-gray-300">explicit written authorization</span> to
+            perform this security assessment. I understand that unauthorized
+            scanning may violate applicable laws.
+          </label>
         </div>
 
         <div className="flex flex-wrap items-center justify-center gap-2 mt-4">
