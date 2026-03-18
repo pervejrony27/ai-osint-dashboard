@@ -14,7 +14,7 @@ class SubdomainScanner:
         start_time = time.time()
         subdomains = set()
 
-        tasks = [self._crtsh_scan(domain)]
+        tasks = [self._certspotter_scan(domain)]
 
         if settings.SECURITYTRAILS_API_KEY:
             tasks.append(self._securitytrails_scan(domain))
@@ -49,26 +49,25 @@ class SubdomainScanner:
             "scan_time": round(time.time() - start_time, 2)
         }
 
-    async def _crtsh_scan(self, domain: str) -> set:
-        """Use crt.sh Certificate Transparency logs (FREE)"""
+    async def _certspotter_scan(self, domain: str) -> set:
+        """Use CertSpotter API (FREE)"""
         subdomains = set()
         try:
             async with httpx.AsyncClient(timeout=20) as client:
-                url = f"https://crt.sh/?q=%.{domain}&output=json"
+                url = f"https://api.certspotter.com/v1/issuances?domain={domain}&include_subdomains=true&expand=dns_names"
                 resp = await client.get(url)
                 if resp.status_code == 200:
                     data = resp.json()
-                    for entry in data:
-                        name = entry.get("name_value", "")
-                        for sub in name.split("\n"):
-                            sub = sub.strip().lower()
-                            if sub.endswith(f".{domain}") or sub == domain:
-                                sub = sub.lstrip("*.")
-                                if sub:
+                    for issuance in data:
+                        for name in issuance.get("dns_names", []):
+                            name = name.lower()
+                            if name.endswith(f".{domain}") or name == domain:
+                                sub = name.lstrip("*.")
+                                if sub and sub != domain:
                                     subdomains.add(sub)
-                    self.sources_used.append("crt.sh")
+                    self.sources_used.append("CertSpotter")
         except Exception as e:
-            print(f"crt.sh error: {e}")
+            print(f"CertSpotter error: {e}")
         return subdomains
 
     async def _securitytrails_scan(self, domain: str) -> set:

@@ -194,14 +194,14 @@ function App() {
     </p>
 
     <p className="mt-4 text-gray-500 flex flex-wrap justify-center items-center gap-3">
-      <span>Built by</span>
+      <span>Developed by</span>
 
       <a
         target="_blank"
         rel="noopener noreferrer"
         className="text-cyber-accent hover:text-cyber-glow transition-colors"
       >
-        MD Pervej Ahmed Rony
+        MD Pervej Ahmed (Rony)
       </a>
 
       <span>|</span>

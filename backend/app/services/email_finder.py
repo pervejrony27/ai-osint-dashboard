@@ -111,24 +111,10 @@ class EmailFinder:
         results = []
         try:
             async with httpx.AsyncClient(timeout=10) as client:
-                # Use a public search approach
-                url = (
-                    f"https://emailrep.io/{domain}"
-                )
-                # Fallback: try common email patterns
-                common_prefixes = [
-                    "info", "admin", "contact", "support",
-                    "hello", "sales", "hr", "jobs",
-                    "security", "abuse", "postmaster",
-                    "webmaster", "noc"
-                ]
-                for prefix in common_prefixes:
-                    email = f"{prefix}@{domain}"
-                    results.append({
-                        "email": email,
-                        "source": "Common Pattern",
-                        "confidence": "low"
-                    })
+                # Try to search for emails using a public API or service
+                # For now, we'll skip this as it requires API keys
+                # Could integrate with free services like emailrep.io for validation
+                pass
         except Exception as e:
             print(f"Search error: {e}")
         return results
